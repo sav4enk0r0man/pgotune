@@ -125,12 +125,6 @@ func main() {
 
 	settings := pgSettings.GetSettings()
 
-	keys := make([]string, 0, len(settings))
-	for k := range pgSettings.GetSettings() {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
 	if flags.Get("json") {
 		if j, err := toJson(settings); err != nil {
 			elog.Fatal(err)
@@ -141,6 +135,13 @@ func main() {
 		if !flags.Get("header") {
 			fmt.Printf("%s", options.Header())
 		}
+
+		keys := make([]string, 0, len(settings))
+		for k := range pgSettings.GetSettings() {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+
 		for _, k := range keys {
 			fmt.Printf("%s = %s\n", k, settings[k])
 		}
