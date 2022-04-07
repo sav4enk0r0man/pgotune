@@ -255,10 +255,10 @@ func (ps PGSettings) GetMemSetting(name string) (string, error) {
 	for k := range ps.memSettings {
 		if k == name {
 			if typeRelated := ps.memSettings[name][ps.dbType].Get(); typeRelated != "" {
-				return ps.memSettings[name][ps.dbType].Get(), nil
+				return typeRelated, nil
 			}
 			if storageRelated := ps.memSettings[name][ps.dbStorage].Get(); storageRelated != "" {
-				return ps.memSettings[name][ps.dbStorage].Get(), nil
+				return storageRelated, nil
 			}
 		}
 	}
@@ -271,8 +271,7 @@ func (ps PGSettings) GetStrSetting(name string) (string, error) {
 			if typeRelated := ps.strSettings[name][ps.dbType]; typeRelated != "" {
 				return typeRelated, nil
 			}
-			storageRelated := ps.strSettings[name][ps.dbStorage]
-			if storageRelated != "" {
+			if storageRelated := ps.strSettings[name][ps.dbStorage]; storageRelated != "" {
 				return storageRelated, nil
 			}
 		}
@@ -497,6 +496,5 @@ func (ps *PGSettings) recalculate() {
 				"desktop": DbMemory{(workMem / 6 / KB) * KB},
 			}[dbType]
 		}
-
 	}
 }
