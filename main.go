@@ -56,6 +56,11 @@ var options = Options{
 		Short('c').
 		Envar("PGT_CONNECTIONS").
 		String(),
+	"prefix": kingpin.Flag("prefix",
+		"Settings name prefix").
+		Short('P').
+		Envar("PGT_PREFIX").
+		String(),
 }
 
 var flags = Flags{
@@ -125,6 +130,14 @@ func main() {
 
 	settings := pgSettings.GetSettings()
 
+	if prefix := options.GetOption("prefix"); prefix != "" {
+		s := map[string]string{}
+		for k, v := range settings {
+			s[prefix+k] = v
+		}
+		settings = s
+	}
+
 	if flags.Get("json") {
 		if j, err := toJson(settings); err != nil {
 			elog.Fatal(err)
@@ -137,7 +150,7 @@ func main() {
 		}
 
 		keys := make([]string, 0, len(settings))
-		for k := range pgSettings.GetSettings() {
+		for k := range settings {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
