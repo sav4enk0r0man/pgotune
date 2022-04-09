@@ -108,7 +108,7 @@ func (m DbMemory) Get() string {
 		return fmt.Sprintf("%sMB", strconv.Itoa(m.InBytes()/MB))
 	}
 	if m.InBytes()%KB == 0 {
-		return fmt.Sprintf("%sKB", strconv.Itoa(m.InBytes()/KB))
+		return fmt.Sprintf("%skB", strconv.Itoa(m.InBytes()/KB))
 	}
 	return strconv.Itoa(m.InBytes())
 }
